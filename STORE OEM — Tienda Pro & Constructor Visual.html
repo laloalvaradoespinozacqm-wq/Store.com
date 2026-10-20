@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="es" id="htmlRoot" class="scroll-smooth h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STORE OEM — Audio Premium & Accesorios</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            500: '#64748b',
+                            800: '#1e293b',
+                            900: 'var(--color-brand-900, #0f172a)',
+                            blue: 'var(--color-brand-blue, #2563eb)',
+                            blueHover: 'var(--color-brand-blue, #1d4ed8)'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --color-brand-900: #0f172a;
+            --color-brand-blue: #2563eb;
+        }
+        
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .product-card {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            flex: 0 0 280px;
+        }
+        @media (min-width: 768px) {
+            .product-card { flex: 0 0 310px; }
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.08);
+        }
+
+        @keyframes waveAnimation {
+            0%, 100% { height: 10px; }
+            50% { height: 48px; }
+        }
+        .animate-wave { animation: waveAnimation 1.1s infinite ease-in-out; }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.25s; }
+        .delay-3 { animation-delay: 0.4s; }
+    </style>
+</head>
+<body id="bodyRoot" class="bg-[#f8fafc] text-brand-900 font-sans antialiased min-h-full flex flex-col selection:bg-brand-blue selection:text-white">
+
+    <!-- TOP ANNOUNCEMENT BAR (Dinámico) -->
+    <div id="block-announcement" class="store-block bg-brand-900 text-white text-xs font-medium py-2 px-4 text-center flex items-center justify-center gap-3 tracking-wide transition-all">
+        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-white/20 text-white font-semibold text-[10px] uppercase">
+            <i class="fa-solid fa-bullhorn"></i> Aviso
+        </span>
+        <span id="announcementTextDisplay">Entrega rápida y opción de Pago Contra Entrega en tu localidad</span>
+    </div>
+
+    <!-- HEADER NAVIGATION -->
+    <header class="sticky top-0 z-40 w-full glass-panel border-b border-slate-200/80 transition-all duration-200">
+        <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-8 h-20 flex items-center justify-between gap-6">
+            
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-brand-900 text-white flex items-center justify-center font-black text-sm tracking-widest shadow-md">
+                    OEM
+                </div>
+                <div>
+                    <span class="text-xl font-extrabold tracking-tight text-brand-900 block leading-none">STORE <span class="text-brand-blue font-light">OEM</span></span>
+                    <span class="text-[10px] font-semibold text-brand-500 tracking-wider uppercase">Audio & Accesorios</span>
+                </div>
+            </a>
+
+            <!-- Search Bar Block -->
+            <div id="block-search" class="store-block flex-1 max-w-xl relative hidden md:block">
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-base"></i>
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        placeholder="Buscar por modelo o característica..." 
+                        class="w-full bg-slate-100 text-sm text-brand-900 placeholder-slate-400 pl-11 pr-10 py-3 rounded-2xl border border-transparent focus:border-brand-blue focus:bg-white focus:outline-none transition-all shadow-inner"
+                        oninput="handleSearch(this.value)"
+                    >
+                    <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                        <i class="fa-solid fa-circle-xmark text-base"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Actions Bar -->
+            <div class="flex items-center gap-3">
+                <button 
+                    onclick="openAdminLogin()" 
+                    class="flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 px-3.5 py-2.5 rounded-2xl transition-all shadow-sm"
+                    title="Panel de Administración"
+                >
+                    <i class="fa-solid fa-gear text-brand-blue"></i>
+                    <span class="hidden sm:inline">Administrar</span>
+                </button>
+
+                <a href="https://wa.me/529371281679" target="_blank" class="hidden lg:flex items-center gap-2 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-4 py-2.5 rounded-2xl transition-all dynamic-wa-link">
+                    <i class="fa-brands fa-whatsapp text-emerald-600 text-base"></i>
+                    <span id="headerWaNumber">937 128 1679</span>
+                </a>
+
+                <button 
+                    onclick="toggleCart(true)" 
+                    class="relative p-3 text-brand-900 hover:text-brand-blue bg-slate-100 hover:bg-slate-200/80 rounded-2xl transition-all duration-200 focus:outline-none"
+                    aria-label="Carrito"
+                >
+                    <i class="fa-solid fa-bag-shopping text-xl"></i>
+                    <span id="cartBadge" class="hidden absolute -top-1.5 -right-1.5 bg-brand-blue text-white text-[11px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center shadow-lg border-2 border-white">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN DYNAMIC SECTIONS CONTAINER (Controlado por el Constructor Visual) -->
+    <main id="mainSectionsContainer" class="w-full max-w-[1600px] mx-auto px-4 sm:px-8 py-6 sm:py-10 flex-1 space-y-12">
+        
+        <!-- BLOCK: HERO BANNER -->
+        <section id="block-hero" class="store-block">
+            <div class="bg-gradient-to-br from-brand-900 via-slate-900 to-slate-800 text-white rounded-3xl p-8 sm:p-12 relative overflow-hidden shadow-2xl border border-slate-700/50">
+                <div class="absolute -top-32 -right-32 w-96 h-96 bg-brand-blue/30 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="relative z-10 max-w-2xl space-y-4">
+                    <span class="px-3.5 py-1.5 rounded-full bg-white/10 text-slate-200 text-xs font-semibold backdrop-blur-md border border-white/10 inline-block">
+                        <i class="fa-solid fa-bolt text-brand-blue"></i> Control Absoluto de tu Negocio
+                    </span>
+                    <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
+                        <span id="heroTitle1">Audio Fidelidad Pro.</span><br/>
+                        <span id="heroTitle2" class="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-white">Sin intermediarios.</span>
+                    </h1>
+                    <p id="heroSubtitle" class="text-slate-300 text-sm sm:text-base font-light leading-relaxed">
+                        Catálogo interactivo con navegación horizontal fluida y pedidos directos sincronizados a tu WhatsApp personal.
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-3">
+                        <a href="#block-carousels" class="bg-brand-blue hover:opacity-90 text-white px-6 py-3.5 rounded-2xl font-bold text-xs shadow-lg transition-all">
+                            Ver Productos en Movimiento
+                        </a>
+                        <a href="#block-simulator" class="bg-white/10 hover:bg-white/20 text-white px-6 py-3.5 rounded-2xl font-semibold text-xs backdrop-blur-md border border-white/10 transition-all">
+                            Simulador ANC
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BLOCK: HORIZONTAL PRODUCT CAROUSELS -->
+        <section id="block-carousels" class="store-block space-y-12">
+            <!-- Airpods -->
+            <div class="space-y-4" id="section-airpods">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-extrabold text-brand-900 flex items-center gap-2">
+                            <i class="fa-solid fa-headphones text-brand-blue"></i> Audífonos Inalámbricos Pro
+                        </h2>
+                        <p class="text-xs text-slate-500">Desliza hacia los lados para explorar modelos</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="scrollContainer('grid-airpods', -320)" class="w-9 h-9 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 flex items-center justify-center shadow-sm">
+                            <i class="fa-solid fa-chevron-left text-xs"></i>
+                        </button>
+                        <button onclick="scrollContainer('grid-airpods', 320)" class="w-9 h-9 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 flex items-center justify-center shadow-sm">
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="grid-airpods" class="flex gap-6 overflow-x-auto no-scrollbar pb-4 pt-2 px-1 snap-x snap-mandatory"></div>
+            </div>
+
+            <!-- Cargadores -->
+            <div class="space-y-4" id="section-cargadores">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-extrabold text-brand-900 flex items-center gap-2">
+                            <i class="fa-solid fa-bolt text-brand-blue"></i> Cargadores & Carga Rápida
+                        </h2>
+                        <p class="text-xs text-slate-500">Desliza hacia los lados para explorar accesorios de energía</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="scrollContainer('grid-cargadores', -320)" class="w-9 h-9 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 flex items-center justify-center shadow-sm">
+                            <i class="fa-solid fa-chevron-left text-xs"></i>
+                        </button>
+                        <button onclick="scrollContainer('grid-cargadores', 320)" class="w-9 h-9 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 flex items-center justify-center shadow-sm">
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="grid-cargadores" class="flex gap-6 overflow-x-auto no-scrollbar pb-4 pt-2 px-1 snap-x snap-mandatory"></div>
+            </div>
+
+            <!-- Accesorios -->
+            <div class="space-y-4" id="section-accesorios">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-extrabold text-brand-900 flex items-center gap-2">
+                            <i class="fa-solid fa-shield-halved text-brand-blue"></i> Fundas & Accesorios
+                        </h2>
+                        <p class="text-xs text-slate-500">Desliza hacia los lados para ver protectores</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="scrollContainer('grid-accesorios', -320)" class="w-9 h-9 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 flex items-center justify-center shadow-sm">
+                            <i class="fa-solid fa-chevron-left text-xs"></i>
+                        </button>
+                        <button onclick="scrollContainer('grid-accesorios', 320)" class="w-9 h-9 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 flex items-center justify-center shadow-sm">
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="grid-accesorios" class="flex gap-6 overflow-x-auto no-scrollbar pb-4 pt-2 px-1 snap-x snap-mandatory"></div>
+            </div>
+        </section>
+
+        <!-- BLOCK: ANC SIMULATOR -->
+        <section id="block-simulator" class="store-block bg-white rounded-3xl p-8 sm:p-12 border border-slate-200/80 shadow-sm overflow-hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-5 space-y-4">
+                    <span class="px-3 py-1 bg-brand-blue/10 text-brand-blue text-xs font-extrabold rounded-full uppercase tracking-wider">Demostración Interactiva</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-brand-900">
+                        Simulador de Cancelación Activa de Ruido (ANC)
+                    </h2>
+                    <p class="text-sm text-slate-500 leading-relaxed">
+                        Prueba el nivel de aislamiento de los chips OEM.
+                    </p>
+                    <div class="pt-2 grid grid-cols-3 gap-3">
+                        <button onclick="setANCMode('off')" id="btnAncOff" class="anc-btn bg-slate-100 hover:bg-slate-200 p-3 rounded-2xl text-center border-2 border-brand-900 transition-all">
+                            <i class="fa-solid fa-volume-high text-lg mb-1 text-slate-700 block"></i>
+                            <span class="text-[11px] font-bold text-brand-900 block">Normal</span>
+                        </button>
+                        <button onclick="setANCMode('anc')" id="btnAncOn" class="anc-btn bg-slate-100 hover:bg-slate-200 p-3 rounded-2xl text-center border-2 border-transparent transition-all">
+                            <i class="fa-solid fa-ear-deaf text-lg mb-1 text-brand-blue block"></i>
+                            <span class="text-[11px] font-bold text-brand-900 block">ANC Activo</span>
+                        </button>
+                        <button onclick="setANCMode('transparency')" id="btnAncTrans" class="anc-btn bg-slate-100 hover:bg-slate-200 p-3 rounded-2xl text-center border-2 border-transparent transition-all">
+                            <i class="fa-solid fa-wave-square text-lg mb-1 text-emerald-600 block"></i>
+                            <span class="text-[11px] font-bold text-brand-900 block">Ambiente</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7 bg-brand-900 rounded-3xl p-8 text-white relative overflow-hidden shadow-inner flex flex-col justify-between min-h-[260px]">
+                    <div class="flex items-center justify-between text-xs text-white/50 pb-4 border-b border-white/10">
+                        <span id="simulatorStatus" class="flex items-center gap-2 font-mono text-xs">
+                            <span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span> Modo: Normal
+                        </span>
+                        <span id="simEnvironmentText" class="font-mono text-brand-blue text-xs">Ruido Urbano</span>
+                    </div>
+                    <div class="my-6 flex items-center justify-center gap-3 h-16">
+                        <div class="wave-bar w-2 bg-brand-blue rounded-full animate-wave"></div>
+                        <div class="wave-bar w-2 bg-brand-blue rounded-full animate-wave delay-1"></div>
+                        <div class="wave-bar w-2 bg-brand-blue rounded-full animate-wave delay-2"></div>
+                        <div class="wave-bar w-2 bg-brand-blue rounded-full animate-wave delay-3"></div>
+                    </div>
+                    <div class="bg-black/20 p-3 rounded-2xl border border-white/10 text-center">
+                        <p id="ancDescription" class="text-xs text-white/70">
+                            Escuchas el sonido ambiente mezclado normalmente con la música.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BLOCK: CUSTOM TEXT BLOCK (Dinámico) -->
+        <section id="block-custom" class="store-block bg-gradient-to-r from-blue-50 to-indigo-50 rounded-3xl p-8 border border-blue-100 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div class="space-y-2">
+                <span class="text-xs font-bold text-brand-blue uppercase tracking-wider">Aviso Especial</span>
+                <h3 id="customBlockTitle" class="text-xl font-extrabold text-brand-900">¿Tienes dudas sobre compatibilidad o entregas personales?</h3>
+                <p id="customBlockText" class="text-xs sm:text-sm text-slate-600">Escríbenos directamente y te asesoramos al instante para que elijas el accesorio ideal.</p>
+            </div>
+            <a href="https://wa.me/529371281679" target="_blank" class="dynamic-wa-link bg-brand-blue hover:opacity-90 text-white font-bold text-xs px-6 py-3.5 rounded-2xl shadow transition-all flex-shrink-0">
+                <i class="fa-brands fa-whatsapp text-base mr-1"></i> Consultar por WhatsApp
+            </a>
+        </section>
+
+    </main>
+
+    <!-- FOOTER BLOCK -->
+    <footer id="block-footer" class="store-block bg-white border-t border-slate-200 mt-20">
+        <div class="w-full max-w-[1600px] mx-auto px-4 sm:px-8 py-10 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-4">
+            <p>&copy; 2026 STORE OEM. Control total de catálogo y logística.</p>
+            <div class="flex gap-4">
+                <button onclick="openAdminLogin()" class="font-bold text-brand-blue hover:underline">Acceso Administrador</button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SHOPPING CART DRAWER -->
+    <div id="cartBackdrop" onclick="toggleCart(false)" class="fixed inset-0 bg-brand-900/40 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+    <aside id="cartDrawer" class="fixed top-0 right-0 bottom-0 w-full max-w-md bg-white z-50 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+        <div class="p-6 border-b border-slate-200 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-bag-shopping text-brand-blue text-lg"></i>
+                <h3 class="text-lg font-bold text-brand-900">Tu Pedido</h3>
+                <span id="cartItemCount" class="text-xs font-bold text-brand-blue bg-blue-50 px-2.5 py-0.5 rounded-full">(0)</span>
+            </div>
+            <button onclick="toggleCart(false)" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+        <div id="cartList" class="flex-1 overflow-y-auto p-6 space-y-4 divide-y divide-slate-100"></div>
+        <div class="p-6 border-t border-slate-200 bg-slate-50 space-y-4">
+            <div class="space-y-1 text-xs">
+                <div class="flex justify-between text-slate-500"><span>Subtotal</span><span id="subtotalPrice" class="font-bold text-brand-900">$0.00</span></div>
+                <div class="flex justify-between text-base font-extrabold text-brand-900 pt-2 border-t border-slate-200"><span>Total</span><span id="totalPrice" class="text-brand-blue">$0.00</span></div>
+            </div>
+            <button onclick="openCheckoutModal()" id="checkoutBtn" disabled class="w-full bg-emerald-500 hover:bg-emerald-600 disabled:bg-slate-300 disabled:cursor-not-allowed text-white py-4 rounded-2xl font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2">
+                <i class="fa-brands fa-whatsapp text-lg"></i> Confirmar Pedido por WhatsApp
+            </button>
+        </div>
+    </aside>
+
+    <!-- CHECKOUT MODAL (Con opciones mejoradas de transferencia) -->
+    <div id="checkoutModal" class="fixed inset-0 bg-brand-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative overflow-hidden max-h-[90vh] flex flex-col">
+            <div class="flex justify-between items-center pb-4 border-b border-slate-100">
+                <div>
+                    <h3 class="text-xl font-extrabold text-brand-900">Datos para Entrega</h3>
+                </div>
+                <button onclick="closeCheckoutModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <form onsubmit="sendOrderToWhatsApp(event)" class="space-y-3 py-3 overflow-y-auto flex-1 text-xs">
+                <div><label class="block font-bold mb-1">Nombre *</label><input type="text" id="custName" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-brand-blue"></div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div><label class="block font-bold mb-1">WhatsApp *</label><input type="tel" id="custPhone" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-brand-blue"></div>
+                    <div><label class="block font-bold mb-1">Ciudad *</label><input type="text" id="custCity" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-brand-blue"></div>
+                </div>
+                <div><label class="block font-bold mb-1">Dirección / Referencia *</label><textarea id="custAddress" required rows="2" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none focus:border-brand-blue"></textarea></div>
+                <div>
+                    <label class="block font-bold mb-2">Forma de Pago *</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="border-2 border-brand-blue bg-blue-50/50 rounded-xl p-3 flex flex-col items-center justify-center gap-1 cursor-pointer">
+                            <input type="radio" name="paymentMethod" value="Pago Contra Entrega" checked class="hidden" onchange="togglePaymentInfo()">
+                            <i class="fa-solid fa-hand-holding-dollar text-brand-blue text-lg"></i>
+                            <span class="font-bold">Contra Entrega</span>
+                        </label>
+                        <label class="border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-center gap-1 cursor-pointer">
+                            <input type="radio" name="paymentMethod" value="Transferencia Bancaria" class="hidden" onchange="togglePaymentInfo()">
+                            <i class="fa-solid fa-building-columns text-slate-700 text-lg"></i>
+                            <span class="font-bold">Transferencia</span>
+                        </label>
+                    </div>
+
+                    <!-- Caja de Transferencia Mejorada (Copiar CLABE & Folio) -->
+                    <div id="transferInfoBox" class="hidden mt-3 p-4 bg-blue-50/80 rounded-2xl border border-blue-200 space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-brand-900">Datos Bancarios:</span>
+                            <button type="button" onclick="copyBankDetails()" class="bg-brand-blue text-white px-2.5 py-1 rounded-lg text-[10px] font-bold hover:opacity-90">
+                                <i class="fa-solid fa-copy mr-1"></i> Copiar Datos
+                            </button>
+                        </div>
+                        <pre id="bankDetailsDisplay" class="whitespace-pre-wrap font-sans text-slate-700 bg-white p-2.5 rounded-xl border border-blue-100"></pre>
+                        <div>
+                            <label class="block font-bold text-brand-900 mb-1">Folio o Número de Comprobante / Referencia:</label>
+                            <input type="text" id="custTransferRef" placeholder="Ej. REF-984215 o folio de tu app" class="w-full bg-white border border-blue-200 rounded-xl p-2.5 focus:outline-none focus:border-brand-blue">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3.5 rounded-2xl font-bold shadow-md transition-colors flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Enviar Pedido a WhatsApp
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- PANEL DE ADMINISTRACIÓN PRO (DANDELIONS19) -->
+    <!-- ========================================== -->
+    
+    <!-- Login Modal -->
+    <div id="adminLoginModal" class="fixed inset-0 bg-brand-900/60 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl relative">
+            <button onclick="closeAdminLogin()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="w-14 h-14 bg-brand-900 text-white rounded-2xl flex items-center justify-center mx-auto text-xl font-bold mt-2">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <h3 class="text-lg font-extrabold text-brand-900">Acceso Administrador</h3>
+            <p class="text-xs text-slate-500">Clave secreta requerida</p>
+            <form onsubmit="verifyAdmin(event)" class="space-y-3 pt-2">
+                <input type="password" id="adminPasswordInput" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-center font-bold text-brand-900 focus:outline-none focus:border-brand-blue tracking-widest">
+                <p id="loginErrorMsg" class="text-xs text-red-500 font-bold hidden">Contraseña incorrecta.</p>
+                <button type="submit" class="w-full bg-brand-900 hover:bg-black text-white py-3 rounded-xl font-bold text-xs transition-colors shadow">
+                    Entrar al Panel Pro
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard Principal Pro (Con Pestañas de Gestión y Constructor Visual) -->
+    <div id="adminDashboardModal" class="fixed inset-0 bg-brand-900/80 backdrop-blur-md z-[55] hidden flex items-center justify-center p-4 sm:p-6">
+        <div class="bg-white rounded-3xl max-w-6xl w-full max-h-[95vh] flex flex-col shadow-2xl overflow-hidden relative">
+            
+            <!-- Dashboard Header -->
+            <div class="bg-brand-900 text-white p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-brand-blue flex items-center justify-center font-bold shadow-inner">
+                        <i class="fa-solid fa-sliders"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-extrabold text-base">Panel Pro STORE OEM</h3>
+                        <p class="text-xs text-white/60">Gestión de Stock, Pedidos y Constructor Visual</p>
+                    </div>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="switchAdminTab('products')" id="tabBtn-products" class="tab-btn bg-brand-blue text-white px-3.5 py-2 rounded-xl text-xs font-bold transition-all">
+                        <i class="fa-solid fa-box mr-1"></i> Productos
+                    </button>
+                    <button onclick="switchAdminTab('builder')" id="tabBtn-builder" class="tab-btn bg-slate-800 text-white/80 hover:text-white px-3.5 py-2 rounded-xl text-xs font-bold transition-all">
+                        <i class="fa-solid fa-puzzle-piece mr-1"></i> Constructor Visual
+                    </button>
+                    <button onclick="switchAdminTab('orders')" id="tabBtn-orders" class="tab-btn bg-slate-800 text-white/80 hover:text-white px-3.5 py-2 rounded-xl text-xs font-bold transition-all">
+                        <i class="fa-solid fa-book mr-1"></i> Pedidos
+                    </button>
+                    <button onclick="switchAdminTab('settings')" id="tabBtn-settings" class="tab-btn bg-slate-800 text-white/80 hover:text-white px-3.5 py-2 rounded-xl text-xs font-bold transition-all">
+                        <i class="fa-solid fa-store mr-1"></i> Logística
+                    </button>
+                    <button onclick="closeAdminDashboard()" class="w-9 h-9 rounded-xl bg-red-500 hover:bg-red-600 text-white flex items-center justify-center ml-auto transition-all">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- PESTAÑA 1: GESTIÓN DE PRODUCTOS Y STOCK -->
+            <div id="adminTabContent-products" class="admin-tab-content flex-1 flex flex-col overflow-hidden">
+                <div class="bg-slate-50 border-b border-slate-200 px-6 py-3 flex flex-wrap justify-between items-center text-xs gap-3">
+                    <div class="flex gap-6 text-slate-600">
+                        <span>📦 Total Productos: <strong id="statTotal" class="text-brand-900">0</strong></span>
+                        <span>⚠️ Agotados: <strong id="statOut" class="text-red-600">0</strong></span>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="openProductForm()" class="bg-brand-blue text-white px-3.5 py-1.5 rounded-lg font-bold flex items-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-plus"></i> Nuevo Producto
+                        </button>
+                        <button onclick="exportDatabase()" class="bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 px-3 py-1.5 rounded-lg font-bold flex items-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-download text-brand-blue"></i> Exportar BD
+                        </button>
+                        <label class="bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 px-3 py-1.5 rounded-lg font-bold flex items-center gap-1.5 shadow-sm cursor-pointer">
+                            <i class="fa-solid fa-upload text-emerald-600"></i> Importar BD
+                            <input type="file" accept=".json" onchange="importDatabase(event)" class="hidden">
+                        </label>
+                    </div>
+                </div>
+                <div class="p-6 overflow-y-auto flex-1 space-y-4">
+                    <div class="overflow-x-auto rounded-2xl border border-slate-100">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider">
+                                    <th class="p-4">Foto</th>
+                                    <th class="p-4">Producto</th>
+                                    <th class="p-4">Categoría</th>
+                                    <th class="p-4">Precio / Stock</th>
+                                    <th class="p-4 text-right">Acciones Pro</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminProductsTableBody" class="divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PESTAÑA 2: CONSTRUCTOR VISUAL DE SECCIONES -->
+            <div id="adminTabContent-builder" class="admin-tab-content flex-1 flex flex-col overflow-y-auto p-6 space-y-6 hidden">
+                <div class="max-w-3xl space-y-2">
+                    <h3 class="text-base font-extrabold text-brand-900">Constructor Visual de Bloques y Secciones</h3>
+                    <p class="text-xs text-slate-500">Activa, desactiva o edita los bloques que conforman tu página web en tiempo real sin programar.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Control de Visibilidad de Secciones -->
+                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500">Visibilidad de Secciones</h4>
+                        <div class="space-y-3" id="sectionsVisibilityList">
+                            <!-- Inyectado por JS -->
+                        </div>
+                    </div>
+
+                    <!-- Personalizador de Textos de Bloques -->
+                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500">Personalizar Textos Principales</h4>
+                        <form onsubmit="saveBuilderTexts(event)" class="space-y-3 text-xs">
+                            <div>
+                                <label class="block font-bold mb-1">Texto Barra Superior (Anuncio)</label>
+                                <input type="text" id="builderAnnounceInput" class="w-full bg-white border border-slate-200 rounded-xl p-2.5 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block font-bold mb-1">Título Hero Principal</label>
+                                <input type="text" id="builderHero1Input" class="w-full bg-white border border-slate-200 rounded-xl p-2.5 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block font-bold mb-1">Subtítulo Hero</label>
+                                <textarea id="builderHeroSubInput" rows="2" class="w-full bg-white border border-slate-200 rounded-xl p-2.5 focus:outline-none"></textarea>
+                            </div>
+                            <div>
+                                <label class="block font-bold mb-1">Título Bloque Aviso Especial</label>
+                                <input type="text" id="builderCustomTitle" class="w-full bg-white border border-slate-200 rounded-xl p-2.5 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block font-bold mb-1">Texto Bloque Aviso Especial</label>
+                                <input type="text" id="builderCustomText" class="w-full bg-white border border-slate-200 rounded-xl p-2.5 focus:outline-none">
+                            </div>
+                            <button type="submit" class="w-full bg-brand-blue text-white py-3 rounded-xl font-bold shadow">Guardar Cambios Visuales</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PESTAÑA 3: HISTORIAL DE PEDIDOS -->
+            <div id="adminTabContent-orders" class="admin-tab-content flex-1 flex flex-col overflow-y-auto p-6 space-y-4 hidden">
+                <div class="max-w-3xl">
+                    <h3 class="text-base font-extrabold text-brand-900">Libreta de Pedidos Recientes</h3>
+                    <p class="text-xs text-slate-500">Registro automático de todos los pedidos armados por tus clientes.</p>
+                </div>
+                <div id="adminOrdersContainer" class="space-y-3"></div>
+            </div>
+
+            <!-- PESTAÑA 4: AJUSTES DE LOGÍSTICA -->
+            <div id="adminTabContent-settings" class="admin-tab-content flex-1 flex flex-col overflow-y-auto p-6 space-y-6 hidden">
+                <div class="max-w-xl space-y-4">
+                    <h3 class="text-base font-extrabold text-brand-900">Ajustes de WhatsApp y Bancos</h3>
+                    <form onsubmit="saveSettings(event)" class="space-y-4 text-xs">
+                        <div><label class="block font-bold mb-1">Número de WhatsApp de Pedidos *</label><input type="text" id="setWhatsapp" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none"></div>
+                        <div><label class="block font-bold mb-1">Datos de Transferencia Bancaria (CLABE / Tarjeta) *</label><textarea id="setBankDetails" rows="4" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none"></textarea></div>
+                        <button type="submit" class="w-full bg-brand-900 text-white py-3.5 rounded-2xl font-bold">Guardar Logística</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="p-4 bg-slate-50 border-t border-slate-200 flex justify-between items-center text-xs text-slate-500">
+                <span>Contraseña actual: dandelions19</span>
+                <button onclick="requestFactoryReset()" class="text-red-500 font-bold hover:underline">Restaurar valores de fábrica</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL EDITAR / CREAR PRODUCTO -->
+    <div id="productEditorModal" class="fixed inset-0 bg-brand-900/70 backdrop-blur-sm z-[65] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl overflow-y-auto max-h-[90vh] relative">
+            <button onclick="closeProductForm()" class="absolute top-6 right-6 w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <h3 id="productEditorTitle" class="text-lg font-extrabold text-brand-900 mb-4">Nuevo Producto</h3>
+            <form id="productForm" onsubmit="saveProduct(event)" class="space-y-3 text-xs">
+                <input type="hidden" id="editProductId">
+                <div><label class="block font-bold mb-1">Nombre *</label><input type="text" id="prodNameInput" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none"></div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold mb-1">Categoría Carrusel *</label>
+                        <select id="prodCategoryInput" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none">
+                            <option value="airpods">Audífonos (Airpods)</option>
+                            <option value="cargadores">Cargadores</option>
+                            <option value="accesorios">Accesorios</option>
+                        </select>
+                    </div>
+                    <div><label class="block font-bold mb-1">Estado Stock *</label>
+                        <select id="prodStockStatus" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none">
+                            <option value="available">Disponible</option>
+                            <option value="out">Agotado</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div><label class="block font-bold mb-1">Precio *</label><input type="number" step="0.01" id="prodPriceInput" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none"></div>
+                    <div><label class="block font-bold mb-1">Precio Tacha</label><input type="number" step="0.01" id="prodOriginalPriceInput" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none"></div>
+                </div>
+                <div><label class="block font-bold mb-1">Imagen URL *</label><input type="url" id="prodImageInput" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none"></div>
+                <div><label class="block font-bold mb-1">Características (separadas por coma) *</label><input type="text" id="prodSpecsInput" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-none"></div>
+                <button type="submit" class="w-full bg-brand-blue text-white py-3.5 rounded-2xl font-bold">Guardar Producto</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL CONFIRMACIÓN -->
+    <div id="confirmModal" class="fixed inset-0 bg-brand-900/80 backdrop-blur-sm z-[75] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl">
+            <h3 id="confirmTitle" class="text-lg font-extrabold text-brand-900">¿Estás seguro?</h3>
+            <p id="confirmDesc" class="text-xs text-slate-500">Esta acción no se puede deshacer.</p>
+            <div class="flex gap-3 pt-2">
+                <button onclick="executeConfirm()" class="flex-1 bg-red-500 text-white py-3 rounded-xl font-bold text-xs">Sí, continuar</button>
+                <button onclick="closeConfirmModal()" class="flex-1 bg-slate-100 text-brand-900 py-3 rounded-xl font-bold text-xs">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-brand-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl z-[80] flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+        <span id="toastMessage" class="text-xs font-semibold">Éxito</span>
+    </div>
+
+    <!-- APPLICATION SCRIPT -->
+    <script>
+        const ADMIN_PASS = 'dandelions19';
+
+        const defaultProducts = [
+            { id: 1, name: 'Audífonos Inalámbricos Pro 2a Gen OEM', category: 'airpods', stockStatus: 'available', price: 899.00, originalPrice: 1499.00, badge: 'Más Vendido', image: 'https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?auto=format&fit=crop&w=600&q=80', specs: ['Cancelación ANC', 'Sonido 3D', 'Chip OEM'] },
+            { id: 2, name: 'Audífonos Inalámbricos Gen 3 OEM', category: 'airpods', stockStatus: 'available', price: 699.00, originalPrice: 1199.00, badge: 'Nuevo', image: 'https://images.unsplash.com/photo-1588423771073-b8903fbb85b5?auto=format&fit=crop&w=600&q=80', specs: ['Ergonómicos', 'IPX4', 'Carga rápida'] },
+            { id: 3, name: 'Cargador Cubo Carga Rápida 20W', category: 'cargadores', stockStatus: 'available', price: 249.00, originalPrice: 450.00, badge: '20W', image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=600&q=80', specs: ['Protección sobrecarga', 'Type-C'] },
+            { id: 4, name: 'Cargador Inalámbrico Magnético', category: 'cargadores', stockStatus: 'available', price: 349.00, originalPrice: 600.00, badge: 'Mag', image: 'https://images.unsplash.com/photo-1622445268121-da11d388b191?auto=format&fit=crop&w=600&q=80', specs: ['Alineación 15W', 'Aluminio'] },
+            { id: 5, name: 'Funda Protectora Silicona', category: 'accesorios', stockStatus: 'available', price: 180.00, originalPrice: 350.00, badge: 'Protección', image: 'https://images.unsplash.com/photo-1603313011101-320f26a4f6f6?auto=format&fit=crop&w=600&q=80', specs: ['Silicona flexible', 'Antigolpes'] }
+        ];
+
+        let products = JSON.parse(localStorage.getItem('store_oem_products')) || defaultProducts;
+        let storeSettings = JSON.parse(localStorage.getItem('store_oem_settings')) || {
+            whatsapp: '529371281679',
+            bankDetails: 'Banco BBVA\nCLABE: 012180001234567890\nTitular: Tienda OEM'
+        };
+        let ordersHistory = JSON.parse(localStorage.getItem('store_oem_orders')) || [];
+
+        // Configuración del Constructor Visual de Secciones
+        let storeBlocks = JSON.parse(localStorage.getItem('store_oem_blocks')) || {
+            'block-announcement': { name: 'Barra Superior Anuncio', visible: true },
+            'block-search': { name: 'Buscador de Productos', visible: true },
+            'block-hero': { name: 'Banner Principal (Hero)', visible: true },
+            'block-carousels': { name: 'Carruseles Horizontales de Productos', visible: true },
+            'block-simulator': { name: 'Simulador ANC de Audio', visible: true },
+            'block-custom': { name: 'Bloque de Texto / Aviso Especial', visible: true },
+            'block-footer': { name: 'Pie de Página (Footer)', visible: true }
+        };
+
+        let storeTexts = JSON.parse(localStorage.getItem('store_oem_texts')) || {
+            announcement: 'Entrega rápida y opción de Pago Contra Entrega en tu localidad',
+            hero1: 'Audio Fidelidad Pro.',
+            heroSub: 'Catálogo interactivo con navegación horizontal fluida y pedidos directos sincronizados a tu WhatsApp personal.',
+            customTitle: '¿Tienes dudas sobre compatibilidad o entregas personales?',
+            customText: 'Escríbenos directamente y te asesoramos al instante para que elijas el accesorio ideal.'
+        };
+
+        let cart = [], searchQuery = '', pendingConfirmAction = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            applyStoreSettings();
+            applyVisualSettings();
+            renderCarousels();
+            updateCartUI();
+        });
+
+        function saveProductsToStorage() { localStorage.setItem('store_oem_products', JSON.stringify(products)); }
+
+        function applyStoreSettings() {
+            document.querySelectorAll('.dynamic-wa-link').forEach(l => l.href = `https://wa.me/${storeSettings.whatsapp}`);
+            const hNum = document.getElementById('headerWaNumber'); if(hNum) hNum.innerText = storeSettings.whatsapp;
+            document.getElementById('bankDetailsDisplay').innerText = storeSettings.bankDetails;
+        }
+
+        function applyVisualSettings() {
+            // Textos
+            document.getElementById('announcementTextDisplay').innerText = storeTexts.announcement;
+            document.getElementById('heroTitle1').innerText = storeTexts.hero1;
+            document.getElementById('heroSubtitle').innerText = storeTexts.heroSub;
+            document.getElementById('customBlockTitle').innerText = storeTexts.customTitle;
+            document.getElementById('customBlockText').innerText = storeTexts.customText;
+
+            // Visibilidad de Bloques
+            const container = document.getElementById('mainSectionsContainer');
+            Object.keys(storeBlocks).forEach(blockId => {
+                const el = document.getElementById(blockId);
+                if(el) {
+                    if(storeBlocks[blockId].visible) el.classList.remove('hidden');
+                    else el.classList.add('hidden');
+                }
+            });
+        }
+
+        // SCROLL HORIZONTAL DE CARRUSELES
+        function scrollContainer(containerId, distance) {
+            document.getElementById(containerId).scrollBy({ left: distance, behavior: 'smooth' });
+        }
+
+        function renderCarousels() {
+            const cats = ['airpods', 'cargadores', 'accesorios'];
+            cats.forEach(cat => {
+                const container = document.getElementById(`grid-${cat}`);
+                if(!container) return;
+
+                let filtered = products.filter(p => p.category === cat && (p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.specs.some(s => s.toLowerCase().includes(searchQuery.toLowerCase()))));
+                
+                if(filtered.length === 0) {
+                    container.innerHTML = `<div class="text-xs text-slate-400 py-4 px-2">No hay productos en esta categoría.</div>`;
+                    return;
+                }
+
+                container.innerHTML = filtered.map(product => {
+                    const isOut = product.stockStatus === 'out';
+                    return `
+                        <div class="product-card bg-white rounded-3xl p-5 border border-slate-200/80 flex flex-col justify-between relative overflow-hidden snap-start shadow-sm">
+                            <div>
+                                ${product.badge ? `<span class="absolute top-4 left-4 bg-slate-900 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full z-10">${product.badge}</span>` : ''}
+                                ${isOut ? `<span class="absolute top-4 right-4 bg-red-500 text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full z-10">Agotado</span>` : ''}
+
+                                <div class="w-full h-44 rounded-2xl overflow-hidden mb-4 bg-slate-50 flex items-center justify-center relative">
+                                    <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover object-center ${isOut ? 'grayscale opacity-50' : ''}" onerror="this.src='https://placehold.co/600x600/f1f5f9/64748b';">
+                                </div>
+                                <h3 class="text-sm font-bold text-brand-900 mb-2 leading-snug line-clamp-1">${product.name}</h3>
+                                <ul class="text-[11px] text-slate-500 space-y-1 mb-4">
+                                    ${product.specs.map(s => `<li class="flex items-center gap-1.5"><i class="fa-solid fa-check text-[9px] text-emerald-500"></i><span>${s}</span></li>`).join('')}
+                                </ul>
+                            </div>
+                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                                <div>
+                                    ${product.originalPrice ? `<span class="text-[11px] text-slate-400 line-through">$${Number(product.originalPrice).toFixed(2)}</span>` : ''}
+                                    <div class="text-base font-extrabold text-brand-900">$${Number(product.price).toFixed(2)}</div>
+                                </div>
+                                ${isOut ? 
+                                    `<span class="text-xs font-bold text-slate-400 bg-slate-100 px-3 py-2 rounded-xl">No disponible</span>` :
+                                    `<button onclick="addToCart(${product.id})" class="bg-brand-blue hover:opacity-90 text-white px-3.5 py-2 rounded-xl text-xs font-bold transition-all shadow"><i class="fa-solid fa-cart-plus mr-1"></i> Agregar</button>`
+                                }
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            });
+        }
+
+        function handleSearch(val) {
+            searchQuery = val.trim();
+            document.getElementById('clearSearchBtn').classList.toggle('hidden', searchQuery.length === 0);
+            renderCarousels();
+        }
+        function clearSearch() {
+            searchQuery = '';
+            document.getElementById('searchInput').value = '';
+            document.getElementById('clearSearchBtn').classList.add('hidden');
+            renderCarousels();
+        }
+
+        // CARRITO & CHECKOUT
+        function addToCart(id) {
+            const p = products.find(x => x.id === id); if(!p || p.stockStatus === 'out') return;
+            const ex = cart.find(x => x.id === id); if(ex) ex.quantity++; else cart.push({...p, quantity: 1});
+            updateCartUI(); showToast(`Añadido: ${p.name}`);
+        }
+        function removeFromCart(id) { cart = cart.filter(x => x.id !== id); updateCartUI(); }
+        function updateQuantity(id, d) { const i = cart.find(x => x.id === id); if(i){ i.quantity+=d; if(i.quantity<=0) removeFromCart(id); else updateCartUI();} }
+        function updateCartUI() {
+            const list = document.getElementById('cartList');
+            const total = cart.reduce((a, b) => a + (b.price * b.quantity), 0);
+            const qty = cart.reduce((a, b) => a + b.quantity, 0);
+            document.getElementById('cartBadge').innerText = qty;
+            document.getElementById('cartBadge').classList.toggle('hidden', qty === 0);
+            document.getElementById('cartItemCount').innerText = `(${qty})`;
+            document.getElementById('subtotalPrice').innerText = `$${total.toFixed(2)}`;
+            document.getElementById('totalPrice').innerText = `$${total.toFixed(2)}`;
+            document.getElementById('checkoutBtn').disabled = qty === 0;
+            list.innerHTML = cart.length ? cart.map(item => `
+                <div class="flex items-center gap-3 pt-3 first:pt-0">
+                    <img src="${item.image}" class="w-12 h-12 object-cover rounded-xl bg-slate-100 flex-shrink-0" onerror="this.src='https://placehold.co/100x100'">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-xs font-bold text-brand-900 truncate">${item.name}</h4>
+                        <span class="text-xs text-brand-blue font-bold">$${Number(item.price).toFixed(2)}</span>
+                        <div class="flex items-center gap-2 mt-1">
+                            <button onclick="updateQuantity(${item.id}, -1)" class="w-5 h-5 bg-slate-100 rounded text-xs font-bold">-</button>
+                            <span class="text-xs font-bold px-1">${item.quantity}</span>
+                            <button onclick="updateQuantity(${item.id}, 1)" class="w-5 h-5 bg-slate-100 rounded text-xs font-bold">+</button>
+                        </div>
+                    </div>
+                    <button onclick="removeFromCart(${item.id})" class="text-slate-300 hover:text-red-500 p-1"><i class="fa-solid fa-trash-can"></i></button>
+                </div>
+            `).join('') : '<div class="text-center py-12 text-slate-400 text-xs font-bold">Tu carrito está vacío</div>';
+        }
+        function toggleCart(open) {
+            document.getElementById('cartBackdrop').classList.toggle('opacity-0', !open);
+            document.getElementById('cartBackdrop').classList.toggle('pointer-events-none', !open);
+            document.getElementById('cartDrawer').classList.toggle('translate-x-full', !open);
+        }
+        function openCheckoutModal() { toggleCart(false); document.getElementById('checkoutModal').classList.remove('hidden'); }
+        function closeCheckoutModal() { document.getElementById('checkoutModal').classList.add('hidden'); }
+        
+        function togglePaymentInfo() {
+            const isTransfer = document.querySelector('input[name="paymentMethod"]:checked').value.includes('Transferencia');
+            document.getElementById('transferInfoBox').classList.toggle('hidden', !isTransfer);
+        }
+
+        // Copiar datos bancarios con 1 clic
+        function copyBankDetails() {
+            const text = storeSettings.bankDetails;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => showToast('¡Datos bancarios copiados al portapapeles!'));
+            } else {
+                const el = document.createElement('textarea');
+                el.value = text;
+                document.body.appendChild(el);
+                el.select();
+                document.execCommand('copy');
+                document.body.removeChild(el);
+                showToast('¡Datos bancarios copiados!');
+            }
+        }
+        
+        function sendOrderToWhatsApp(e) {
+            e.preventDefault();
+            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+            const transferRef = document.getElementById('custTransferRef').value.trim();
+            
+            let paymentText = paymentMethod;
+            if(paymentMethod.includes('Transferencia') && transferRef) {
+                paymentText += ` (Folio/Ref: ${transferRef})`;
+            }
+
+            const orderData = {
+                date: new Date().toLocaleString(),
+                name: document.getElementById('custName').value.trim(),
+                phone: document.getElementById('custPhone').value.trim(),
+                city: document.getElementById('custCity').value.trim(),
+                address: document.getElementById('custAddress').value.trim(),
+                payment: paymentText,
+                items: [...cart],
+                total: cart.reduce((a,b)=>a+(b.price*b.quantity),0)
+            };
+
+            ordersHistory.unshift(orderData);
+            if(ordersHistory.length > 30) ordersHistory.pop();
+            localStorage.setItem('store_oem_orders', JSON.stringify(ordersHistory));
+
+            const msg = `🛒 *NUEVO PEDIDO DE TIENDA*\n👤 *Cliente:* ${orderData.name}\n📞 ${orderData.phone}\n📍 ${orderData.city}\n🏠 ${orderData.address}\n💳 *Pago:* ${orderData.payment}\n-----------------\n📦 *PRODUCTOS:*\n${orderData.items.map(i=>`${i.quantity}x ${i.name} - $${(i.price*i.quantity).toFixed(2)}`).join('\n')}\n-----------------\n💰 *TOTAL:* $${orderData.total.toFixed(2)}`;
+            window.open(`https://wa.me/${storeSettings.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+            closeCheckoutModal(); cart=[]; updateCartUI(); showToast('Pedido registrado y enviado');
+        }
+
+        // PANEL DE ADMINISTRACIÓN PRO & CONSTRUCTOR VISUAL
+        function openAdminLogin() { document.getElementById('adminLoginModal').classList.remove('hidden'); }
+        function closeAdminLogin() { document.getElementById('adminLoginModal').classList.add('hidden'); document.getElementById('adminPasswordInput').value = ''; }
+        function verifyAdmin(e) { 
+            e.preventDefault(); 
+            if(document.getElementById('adminPasswordInput').value === ADMIN_PASS) { 
+                closeAdminLogin(); 
+                renderAdminTable(); 
+                renderBuilderTab();
+                renderAdminOrders();
+                document.getElementById('adminDashboardModal').classList.remove('hidden'); 
+            } else {
+                document.getElementById('loginErrorMsg').classList.remove('hidden');
+            }
+        }
+        function closeAdminDashboard() { document.getElementById('adminDashboardModal').classList.add('hidden'); renderCarousels(); applyVisualSettings(); }
+
+        // Navegación de Pestañas del Panel Admin
+        function switchAdminTab(tabName) {
+            document.querySelectorAll('.admin-tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.replace('bg-brand-blue', 'bg-slate-800');
+                btn.classList.add('text-white/80');
+            });
+            document.getElementById(`adminTabContent-${tabName}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tabBtn-${tabName}`);
+            activeBtn.classList.replace('bg-slate-800', 'bg-brand-blue');
+            activeBtn.classList.remove('text-white/80');
+        }
+
+        function renderAdminTable() {
+            const outCount = products.filter(p => p.stockStatus === 'out').length;
+            document.getElementById('statTotal').innerText = products.length;
+            document.getElementById('statOut').innerText = outCount;
+
+            document.getElementById('adminProductsTableBody').innerHTML = products.map(p => `
+                <tr class="hover:bg-slate-50 transition-colors">
+                    <td class="p-3"><img src="${p.image}" class="w-10 h-10 object-cover rounded-xl bg-slate-100" onerror="this.src='https://placehold.co/100x100'"></td>
+                    <td class="p-3 font-bold text-brand-900">${p.name}</td>
+                    <td class="p-3 uppercase text-[10px] font-bold text-brand-blue">${p.category}</td>
+                    <td class="p-3">
+                        <div class="font-extrabold">$${Number(p.price).toFixed(2)}</div>
+                        <span class="inline-block mt-0.5 px-2 py-0.5 text-[9px] font-bold rounded-full ${p.stockStatus==='out'?'bg-red-100 text-red-600':'bg-emerald-100 text-emerald-700'}">${p.stockStatus==='out'?'Agotado':'Disponible'}</span>
+                    </td>
+                    <td class="p-3 text-right space-x-1">
+                        <button onclick="duplicateProduct(${p.id})" class="bg-purple-50 text-purple-600 px-2.5 py-1.5 rounded-xl font-bold hover:bg-purple-100" title="Duplicar"><i class="fa-solid fa-copy"></i></button>
+                        <button onclick="editProduct(${p.id})" class="bg-blue-50 text-brand-blue px-2.5 py-1.5 rounded-xl font-bold hover:bg-blue-100" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="requestDeleteProduct(${p.id})" class="bg-red-50 text-red-600 px-2.5 py-1.5 rounded-xl font-bold hover:bg-red-100" title="Eliminar"><i class="fa-solid fa-trash-can"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Constructor Visual: Renderizar controles de visibilidad y textos
+        function renderBuilderTab() {
+            const list = document.getElementById('sectionsVisibilityList');
+            list.innerHTML = Object.keys(storeBlocks).map(id => `
+                <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200">
+                    <span class="font-bold text-xs text-brand-900">${storeBlocks[id].name}</span>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" ${storeBlocks[id].visible ? 'checked' : ''} onchange="toggleBlockVisibility('${id}')" class="sr-only peer">
+                        <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-brand-blue"></div>
+                    </label>
+                </div>
+            `).join('');
+
+            document.getElementById('builderAnnounceInput').value = storeTexts.announcement;
+            document.getElementById('builderHero1Input').value = storeTexts.hero1;
+            document.getElementById('builderHeroSubInput').value = storeTexts.heroSub;
+            document.getElementById('builderCustomTitle').value = storeTexts.customTitle;
+            document.getElementById('builderCustomText').value = storeTexts.customText;
+        }
+
+        function toggleBlockVisibility(id) {
+            storeBlocks[id].visible = !storeBlocks[id].visible;
+            localStorage.setItem('store_oem_blocks', JSON.stringify(storeBlocks));
+            applyVisualSettings();
+            showToast('Visibilidad actualizada');
+        }
+
+        function saveBuilderTexts(e) {
+            e.preventDefault();
+            storeTexts.announcement = document.getElementById('builderAnnounceInput').value.trim();
+            storeTexts.hero1 = document.getElementById('builderHero1Input').value.trim();
+            storeTexts.heroSub = document.getElementById('builderHeroSubInput').value.trim();
+            storeTexts.customTitle = document.getElementById('builderCustomTitle').value.trim();
+            storeTexts.customText = document.getElementById('builderCustomText').value.trim();
+            localStorage.setItem('store_oem_texts', JSON.stringify(storeTexts));
+            applyVisualSettings();
+            showToast('Textos guardados correctamente');
+        }
+
+        // Historial de Pedidos en Admin
+        function renderAdminOrders() {
+            const container = document.getElementById('adminOrdersContainer');
+            if(ordersHistory.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-400 text-center py-8 font-bold">No hay pedidos registrados todavía.</p>`;
+            } else {
+                container.innerHTML = ordersHistory.map(o => `
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-xs space-y-1">
+                        <div class="flex justify-between font-bold text-brand-900">
+                            <span>👤 ${o.name} (${o.phone})</span>
+                            <span class="text-brand-blue">$${o.total.toFixed(2)}</span>
+                        </div>
+                        <p class="text-slate-500">📍 ${o.city} - ${o.address}</p>
+                        <p class="text-slate-400 text-[10px]">🕒 ${o.date} | 💳 ${o.payment}</p>
+                        <div class="pt-2 border-t border-slate-200 text-[11px] text-slate-600">
+                            <strong>Artículos:</strong> ${o.items.map(i => `${i.quantity}x ${i.name}`).join(', ')}
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Base de Datos (Exportar / Importar)
+        function exportDatabase() {
+            const dbData = { products, storeSettings, ordersHistory, storeBlocks, storeTexts };
+            const blob = new Blob([JSON.stringify(dbData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `store_oem_backup_${Date.now()}.json`;
+            a.click();
+            showToast('Respaldo descargado');
+        }
+
+        function importDatabase(e) {
+            const file = e.target.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const data = JSON.parse(evt.target.result);
+                    if(data.products) products = data.products;
+                    if(data.storeSettings) storeSettings = data.storeSettings;
+                    if(data.ordersHistory) ordersHistory = data.ordersHistory;
+                    if(data.storeBlocks) storeBlocks = data.storeBlocks;
+                    if(data.storeTexts) storeTexts = data.storeTexts;
+                    
+                    saveProductsToStorage();
+                    localStorage.setItem('store_oem_settings', JSON.stringify(storeSettings));
+                    localStorage.setItem('store_oem_orders', JSON.stringify(ordersHistory));
+                    localStorage.setItem('store_oem_blocks', JSON.stringify(storeBlocks));
+                    localStorage.setItem('store_oem_texts', JSON.stringify(storeTexts));
+
+                    renderAdminTable();
+                    renderBuilderTab();
+                    applyStoreSettings();
+                    applyVisualSettings();
+                    showToast('Base de datos importada correctamente');
+                } catch(err) {
+                    showToast('Error al leer el archivo JSON');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // CRUD Productos
+        function duplicateProduct(id) {
+            const p = products.find(x => x.id === id);
+            if(!p) return;
+            const clone = { ...p, id: Date.now(), name: `${p.name} (Copia)` };
+            products.push(clone);
+            saveProductsToStorage();
+            renderAdminTable();
+            showToast('Producto clonado con éxito');
+        }
+
+        function openProductForm(prod=null) { 
+            document.getElementById('productForm').reset(); 
+            document.getElementById('editProductId').value = prod?prod.id:''; 
+            if(prod){ 
+                document.getElementById('prodNameInput').value=prod.name; 
+                document.getElementById('prodCategoryInput').value=prod.category;
+                document.getElementById('prodStockStatus').value=prod.stockStatus||'available';
+                document.getElementById('prodPriceInput').value=prod.price; 
+                document.getElementById('prodOriginalPriceInput').value=prod.originalPrice||'';
+                document.getElementById('prodImageInput').value=prod.image; 
+                document.getElementById('prodSpecsInput').value=prod.specs.join(', '); 
+            } 
+            document.getElementById('productEditorModal').classList.remove('hidden'); 
+        }
+        function closeProductForm() { document.getElementById('productEditorModal').classList.add('hidden'); }
+        
+        function saveProduct(e) { 
+            e.preventDefault(); 
+            const id = document.getElementById('editProductId').value; 
+            const p = { 
+                id: id?Number(id):Date.now(), 
+                name: document.getElementById('prodNameInput').value.trim(), 
+                category: document.getElementById('prodCategoryInput').value, 
+                stockStatus: document.getElementById('prodStockStatus').value,
+                price: parseFloat(document.getElementById('prodPriceInput').value), 
+                originalPrice: document.getElementById('prodOriginalPriceInput').value?parseFloat(document.getElementById('prodOriginalPriceInput').value):null, 
+                image: document.getElementById('prodImageInput').value.trim(), 
+                specs: document.getElementById('prodSpecsInput').value.split(',').map(s=>s.trim()).filter(Boolean) 
+            }; 
+            if(id) products[products.findIndex(x=>x.id==id)]=p; 
+            else products.push(p); 
+            saveProductsToStorage(); 
+            renderAdminTable(); 
+            closeProductForm(); 
+            showToast('Producto guardado'); 
+        }
+        function editProduct(id) { const p = products.find(x=>x.id===id); if(p) openProductForm(p); }
+        function requestDeleteProduct(id) { openConfirmModal('Eliminar', '¿Borrar producto del sistema?', () => { products = products.filter(x=>x.id!==id); saveProductsToStorage(); renderAdminTable(); }); }
+        function requestFactoryReset() { openConfirmModal('Restaurar Fábrica', '¿Volver al catálogo inicial?', () => { products = JSON.parse(JSON.stringify(defaultProducts)); saveProductsToStorage(); renderAdminTable(); }); }
+        
+        function saveSettings(e) { 
+            e.preventDefault(); 
+            storeSettings.whatsapp = document.getElementById('setWhatsapp').value.trim(); 
+            storeSettings.bankDetails = document.getElementById('setBankDetails').value.trim(); 
+            localStorage.setItem('store_oem_settings', JSON.stringify(storeSettings)); 
+            applyStoreSettings(); 
+            showToast('Logística actualizada'); 
+        }
+        
+        function openConfirmModal(t, d, cb) { document.getElementById('confirmTitle').innerText=t; document.getElementById('confirmDesc').innerText=d; pendingConfirmAction=cb; document.getElementById('confirmModal').classList.remove('hidden'); }
+        function closeConfirmModal() { document.getElementById('confirmModal').classList.add('hidden'); pendingConfirmAction=null; }
+        function executeConfirm() { if(pendingConfirmAction) pendingConfirmAction(); closeConfirmModal(); }
+        
+        function setANCMode(mode) {
+            document.querySelectorAll('.anc-btn').forEach(b => b.classList.replace('border-brand-900', 'border-transparent') || b.classList.replace('border-brand-blue', 'border-transparent') || b.classList.replace('border-emerald-600', 'border-transparent'));
+            if(mode==='off') { document.getElementById('btnAncOff').classList.replace('border-transparent','border-brand-900'); document.getElementById('simEnvironmentText').innerText='Ruido Urbano'; }
+            if(mode==='anc') { document.getElementById('btnAncOn').classList.replace('border-transparent','border-brand-blue'); document.getElementById('simEnvironmentText').innerText='Silencio Aislado'; }
+            if(mode==='transparency') { document.getElementById('btnAncTrans').classList.replace('border-transparent','border-emerald-600'); document.getElementById('simEnvironmentText').innerText='Voces HD'; }
+        }
+        function showToast(m) { const t=document.getElementById('toast'); document.getElementById('toastMessage').innerText=m; t.classList.remove('translate-y-20','opacity-0'); setTimeout(()=>t.classList.add('translate-y-20','opacity-0'),2500); }
+    </script>
+</body>
+</html>
